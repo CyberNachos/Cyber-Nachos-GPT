@@ -1,0 +1,126 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+      "title": "CyberNachos Data Fetcher",
+      "version": "1.0.0",
+      "description": "A plugin that allows GPT to fetch data from the CyberNachos website."
+    },
+    "servers": [
+      {
+        "url": "https://cybernachos.github.io",
+        "description": "Base URL for CyberNachos website."
+      }
+    ],
+    "paths": {
+      "/{path}": {
+        "get": {
+          "operationId": "fetchWebsiteData",
+          "summary": "Fetch a webpage",
+          "description": "Retrieve data from the specified path on the CyberNachos website.",
+          "parameters": [
+            {
+              "name": "path",
+              "in": "path",
+              "required": true,
+              "description": "The specific path on the website to fetch data from (e.g., 'about', 'blog').",
+              "schema": {
+                "type": "string"
+              },
+              "example": "about"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The HTML content of the requested page.",
+              "content": {
+                "text/html": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/data": {
+        "get": {
+          "operationId": "fetchSpecificResource",
+          "summary": "Fetch specific resource",
+          "description": "Fetch a specific resource from the CyberNachos website based on a query.",
+          "parameters": [
+            {
+              "name": "query",
+              "in": "query",
+              "required": true,
+              "description": "A keyword or query to search for specific information.",
+              "schema": {
+                "type": "string"
+              },
+              "example": "robotics"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "A JSON object containing the query results.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/QueryResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "QueryResponse": {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "metadata": {
+              "type": "object",
+              "properties": {
+                "total_results": {
+                  "type": "integer"
+                },
+                "query_time": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "securitySchemes": {
+        "apiKeyAuth": {
+          "type": "apiKey",
+          "in": "header",
+          "name": "Authorization"
+        }
+      }
+    },
+    "security": [
+      {
+        "apiKeyAuth": []
+      }
+    ]
+  }
+  
+  
